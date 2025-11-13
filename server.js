@@ -22,6 +22,12 @@ mongoose
 app.use("/api/contact", contactRoutes);
 app.use("/api/users", userRoutes);
 
+// ✅ Default Route
+app.get("/", (req, res) => {
+  res.send("🚀 Xpertstrikes Backend API is running successfully!");
+});
+
+
 // ✅ Server Start
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
