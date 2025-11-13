@@ -1,5 +1,5 @@
 import express from "express";
-import Contact from "../models/contact.js";
+import Contact from "../models/Contact.js";
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ error: "Please fill all required fields" });
     }
 
-    const newContact = new Contact({
+    const doc = await Contact.create({
       name,
       company,
       email,
@@ -20,13 +20,13 @@ router.post("/", async (req, res) => {
       message,
     });
 
-    await newContact.save();
-    console.log("✅ New Contact Saved:", newContact);
-
-    res.status(200).json({ message: "Form submitted successfully" });
-  } catch (error) {
-    console.error("❌ Error saving contact:", error);
-    res.status(500).json({ error: "Server error, please try again later." });
+    console.log("📩 New Contact saved:", doc._id);
+    return res
+      .status(201)
+      .json({ message: "Form submitted successfully", data: doc });
+  } catch (err) {
+    console.error("Contact save error:", err);
+    return res.status(500).json({ error: "Server error" });
   }
 });
 
