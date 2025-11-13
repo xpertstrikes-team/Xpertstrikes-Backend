@@ -1,5 +1,5 @@
 import express from "express";
-import Contact from "../models/Contact.js";  // ✅ Make sure the path matches your file
+import Contact from "../models/contactModel.js";
 
 const router = express.Router();
 
