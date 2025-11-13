@@ -7,6 +7,8 @@ router.post("/", async (req, res) => {
   try {
     const { name, company, email, phone, service, message } = req.body;
 
+    console.log("📩 New contact request received:", req.body);
+    
     if (!name || !email || !message) {
       return res.status(400).json({ error: "Please fill all required fields" });
     }
