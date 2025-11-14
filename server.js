@@ -9,10 +9,16 @@ import userRoutes from "./routes/userRoutes.js";
 dotenv.config();
 
 const app = express();
-app.use(cors({
-  origin: "https://xpertstrikes.vercel.app/", // ✅ Your frontend URL
-  methods: ["GET", "POST"],
-}));
+app.use(
+  cors({
+    origin: [
+      "https://xpertstrikes.vercel.app",
+      "http://localhost:5173",
+    ],
+    methods: ["GET", "POST"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // ✅ MongoDB Connection
