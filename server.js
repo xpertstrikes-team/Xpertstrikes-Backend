@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 
 import contactRoutes from "./routes/contactRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import adminAuthRoutes from "./routes/adminAuthRoutes.js";
 
 dotenv.config();
 
@@ -20,6 +21,8 @@ app.use(
   })
 );
 app.use(express.json());
+
+app.use("/api/admin", adminAuthRoutes);
 
 // ✅ MongoDB Connection
 mongoose
