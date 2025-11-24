@@ -1,18 +1,30 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
-import Admin from "./models/adminModel.js";
 import dotenv from "dotenv";
+import Admin from "./models/adminModel.js";
 
 dotenv.config();
 
-mongoose.connect(process.env.MONGO_URI).then(async () => {
-  const hashed = await bcrypt.hash("admin123", 10);
+async function createAdmin() {
+  try {
+    console.log("Connecting to MongoDB...");
+    await mongoose.connect(process.env.MONGO_URI);
 
-  await Admin.create({
-    username: "chief",
-    password: hashed,
-  });
+    const hashedPassword = await bcrypt.hash("admin123", 10);
 
-  console.log("Admin created");
-  process.exit();
-});
+    await Admin.deleteMany(); // OPTIONAL: clears old admin record
+
+    await Admin.create({
+      username: "chief",
+      password: hashedPassword,
+    });
+
+    console.log("✅ Admin created successfully!");
+    process.exit();
+  } catch (error) {
+    console.error("❌ Error:", error);
+    process.exit(1);
+  }
+}
+
+createAdmin();
