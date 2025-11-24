@@ -23,6 +23,8 @@ router.post("/", async (req, res) => {
     });
 
     console.log("📩 New Contact saved:", doc._id);
+    console.log("🔥 Incoming Request Body:", req.body);
+
     return res
       .status(201)
       .json({ message: "Form submitted successfully", data: doc });
