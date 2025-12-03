@@ -68,6 +68,11 @@ router.delete("/:id", async (req, res) => {
             .status(401)
             .json({ success: false, error: "Unauthorized" });
 
+        // only allow if role is admin
+        if (decoded.role !== "admin") {
+          return res.status(403).json({ success: false, error: "Forbidden" });
+        }
+
         const { id } = req.params;
         const deleted = await Contact.findByIdAndDelete(id);
         if (!deleted)

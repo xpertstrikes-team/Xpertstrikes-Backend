@@ -10,16 +10,22 @@ async function createAdmin() {
     console.log("Connecting to MongoDB...");
     await mongoose.connect(process.env.MONGO_URI);
 
-    const hashedPassword = await bcrypt.hash("admin123", 10);
+    const hashedAdminPassword = await bcrypt.hash("admin123", 10);
+    const hashedMemberPassword = await bcrypt.hash("member123", 10);
 
-    await Admin.deleteMany(); // OPTIONAL: clears old admin record
+    await Admin.deleteMany(); // clears old admin records
 
-    await Admin.create({
-      username: "chief",
-      password: hashedPassword,
-    });
+    // Create 2 admins
+    await Admin.create({ username: "chief", password: hashedAdminPassword, role: "admin" });
+    await Admin.create({ username: "backup", password: hashedAdminPassword, role: "admin" });
 
-    console.log("✅ Admin created successfully!");
+    // Create 7 members
+    const memberUsernames = ["member1","member2","member3","member4","member5","member6","member7"];
+    for (const uname of memberUsernames) {
+      await Admin.create({ username: uname, password: hashedMemberPassword, role: "member" });
+    }
+
+    console.log("✅ Admins and members created successfully!");
     process.exit();
   } catch (error) {
     console.error("❌ Error:", error);
