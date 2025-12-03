@@ -14,7 +14,9 @@ const adminSchema = new mongoose.Schema({
     type: String,
     enum: ["member", "admin"],
     default: "member",
-  }
-});
+  },
+  resetToken: String,
+  resetExpires: Date,
+}, { timestamps: true });
 
 export default mongoose.model("Admin", adminSchema);
