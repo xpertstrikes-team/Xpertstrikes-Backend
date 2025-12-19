@@ -125,7 +125,9 @@ router.post("/forgot-password", async (req, res) => {
     await admin.save();
 
     // In production send email, here return the URL for convenience
-    const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin/reset?token=${token}&username=${encodeURIComponent(username)}`;
+    // prefer configured FRONTEND_URL, fallback to the known deployed Vercel URL
+    const frontendUrl = process.env.FRONTEND_URL || 'https://xpertstrikes.vercel.app';
+    const resetUrl = `${frontendUrl}/admin/reset?token=${token}&username=${encodeURIComponent(username)}`;
     return res.json({ success: true, resetUrl });
   } catch (error) {
     console.error(error);
