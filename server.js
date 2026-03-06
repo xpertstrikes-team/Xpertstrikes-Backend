@@ -27,9 +27,14 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/admin", adminAuthRoutes);
 
-// ✅ MongoDB Connection
+// ✅ MongoDB Connection with optimized settings
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(process.env.MONGO_URI, {
+    maxPoolSize: 10,
+    minPoolSize: 2,
+    socketTimeoutMS: 45000,
+    serverSelectionTimeoutMS: 5000,
+  })
   .then(() => console.log("✅ MongoDB connected successfully"))
   .catch((err) => console.log("❌ MongoDB Connection Error:", err));
 
@@ -40,6 +45,11 @@ app.use("/api/users", userRoutes);
 // ✅ Default Route
 app.get("/", (req, res) => {
   res.send("🚀 Xpertstrikes Backend API is running successfully!");
+});
+
+// Health check endpoint for keeping server warm
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ status: "ok", timestamp: Date.now() });
 });
 
 

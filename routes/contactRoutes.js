@@ -8,8 +8,6 @@ router.post("/", async (req, res) => {
   try {
     const { name, company, email, phone, service, message } = req.body;
 
-    console.log("📩 New contact request received:", req.body);
-
     if (!name || !email || !message) {
       return res.status(400).json({ error: "Please fill all required fields" });
     }
@@ -23,14 +21,9 @@ router.post("/", async (req, res) => {
       message,
     });
 
-    console.log("📩 New Contact saved:", doc._id);
-    console.log("🔥 Incoming Request Body:", req.body);
-
-    return res
-      .status(201)
-      .json({ message: "Form submitted successfully", data: doc });
+    return res.status(201).json({ message: "Form submitted successfully" });
   } catch (err) {
-    console.error("Contact save error:", err);
+    console.error("Contact error:", err.message);
     return res.status(500).json({ error: "Server error" });
   }
 });
